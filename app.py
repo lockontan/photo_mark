@@ -2,56 +2,45 @@ import piexif
 import os
 import zipfile
 
-import tkinter
-from tkinter import messagebox
-
-outputText = None
+outputInfo = None
 
 password = ['H', 'A', 'N', 'E', 'P', 'U', 'M', 'R', 'O', 'D']
-bassword = ['0',  '1', '2',  '3', '4', '5',  '6',  '7',  '8', '9']
-
-
-# 输出信息到gui界面
-def outputInfo(str):
-  outputText.insert(tkinter.END, str)
-  outputText.see(tkinter.END)
-pass
+bassword = ['0',   '1', '2',   '3', '4', '5',   '6',   '7',   '8', '9']
 
 # 标记文件
 def setMark(filePath, fileName, mark):
-  exif_dict = piexif.load(filePath)
-  # exif_dict["0th"][piexif.ImageIFD.Make] = mark.encode()
-  # exif_dict["0th"][piexif.ImageIFD.Artist] = mark.encode()
-  # 程序名称
-  exif_dict["0th"][305] = mark.encode()
-  # 相机型号
-  exif_dict["0th"][272] = mark.encode()
-  exif_bytes = piexif.dump(exif_dict)
-  piexif.insert(exif_bytes, filePath)
+   exif_dict = piexif.load(filePath)
+   # exif_dict["0th"][piexif.ImageIFD.Make] = mark.encode()
+   # exif_dict["0th"][piexif.ImageIFD.Artist] = mark.encode()
+   # 程序名称
+   exif_dict["0th"][305] = mark.encode()
+   # 相机型号
+   exif_dict["0th"][272] = mark.encode()
+   exif_bytes = piexif.dump(exif_dict)
+   piexif.insert(exif_bytes, filePath)
 
 # 遍历文件夹
 def walkFile(path, mark):
-  newmark = ''
-  for i in str(mark):
-    newmark += password[int(i)]
-  pass
+   newmark = ''
+   for i in str(mark):
+        newmark += password[int(i)]
 
-  for root, dirs, files in os.walk(path):
-    for f in files:
-      if '.jpg' in f or '.png' in f or '.JPG' in f or '.PNG' in f or '.jpeg' in f or '.JPEG' in f:
-        setMark(os.path.join(root, f), f, newmark)
+   for root, dirs, files in os.walk(path):
+        for f in files:
+            if '.jpg' in f or '.png' in f or '.JPG' in f or '.PNG' in f or '.jpeg' in f or '.JPEG' in f:
+                setMark(os.path.join(root, f), f, newmark)
 
 # 对目录进行深度优先遍历
 # :param input_path:
 # :param result:
 # :return:
 def get_zip_file(input_path, result):
-  files = os.listdir(input_path)
-  for file in files:
-    if os.path.isdir(input_path + '/' + file):
-      get_zip_file(input_path + '/' + file, result)
-    else:
-      result.append(input_path + '/' + file)
+   files = os.listdir(input_path)
+   for file in files:
+        if os.path.isdir(input_path + '/' + file):
+            get_zip_file(input_path + '/' + file, result)
+        else:
+            result.append(input_path + '/' + file)
 
 # 压缩文件
 # :param input_path: 压缩的文件夹路径
@@ -59,47 +48,48 @@ def get_zip_file(input_path, result):
 # :param output_name: 压缩包名称
 # :return:
 def zip_file_path(input_path, output_path, output_name):
-  if not os.path.exists(output_path):
-    os.makedirs(output_path)
-  pass
-  f = zipfile.ZipFile(output_path + '/' + output_name, 'w', zipfile.ZIP_DEFLATED)
-  filelists = []
-  get_zip_file(input_path, filelists)
-  for file in filelists:
-    f.write(file)
-  # 调用了close方法才会保证完成压缩
-  f.close()
-  return output_path + "/" + output_name
+    if not os.path.exists(output_path):
+        os.makedirs(output_path)
 
-def startTask(workpath, listNumber, workName, iszip, outputTextArea):
+    f = zipfile.ZipFile(output_path + '/' + output_name, 'w', zipfile.ZIP_DEFLATED)
+    filelists = []
+    get_zip_file(input_path, filelists)
+    for file in filelists:
+        f.write(file)
+    # 调用了close方法才会保证完成压缩
+    f.close()
+    return output_path + "/" + output_name
 
-  global outputText
-  outputText = outputTextArea
+def startMisson(layout):
 
-  outputInfo('总数: ' + str(len(listNumber)) +  '\n\n')
-  
-  for number in listNumber:
+    markList = layout.markList
+    workpath = layout.workpath
+    zipName = layout.zipName
+    isZipValue = layout.isZipValue
 
-    zipName = os.path.join(os.path.split(workpath)[0], str(number),  workName + '.zip')
+    global outputInfo
+    outputInfo = layout.outputInfo
 
-    if os.path.exists(os.path.join(str(number), workName + '.zip')) == False:
-      outputInfo('标记开始: ' + str(number) + '\n')
+    outputInfo('总数: ' + str(len(markList)) +   '\n\n')
+   
+    for number in markList:
 
-      walkFile(workpath, str(number))
+        zipFullPath = os.path.join(os.path.split(workpath)[0], str(number),   zipName + '.zip')
 
-      outputInfo('标记完成: ' + str(number) + '\n')
+        if os.path.exists(os.path.join(str(number), zipName + '.zip')) == False:
+            outputInfo('标记开始: ' + str(number) + '\n')
 
-      if iszip == 1:
-        outputInfo('正在压缩: ' + zipName + '\n')
+            walkFile(workpath, str(number))
 
-        zip_file_path(workpath, os.path.join(os.path.split(workpath)[0], str(number)), workName + '.zip')
+            outputInfo('标记完成: ' + str(number) + '\n')
 
-        outputInfo('完成压缩: ' + zipName + '\n\n')
-      pass
-    else:
-      outputInfo('文件已存在: ' + zipName + '\n')
-    pass
-  pass
+            if isZipValue == 1:
+                outputInfo('正在压缩: ' + zipFullPath + '\n')
 
-  outputInfo('任务完成')
-pass
+                zip_file_path(workpath, os.path.join(os.path.split(workpath)[0], str(number)), zipName + '.zip')
+
+                outputInfo('完成压缩: ' + zipFullPath + '\n\n')
+        else:
+            
+            outputInfo('文件已存在: ' + zipFullPath + '\n')
+    outputInfo('任务完成')
