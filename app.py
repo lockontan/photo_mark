@@ -103,11 +103,12 @@ class Application(tkinter.Tk):
     def setStartButtonCommand(self):
         lists = self.Entry_mark.get().split(',')
         listNumber = [var.replace(' ', '') for var in lists if var]
-
         if not self.workpath:
             return messagebox.showinfo("提示", "请先选择文件夹")
         if len(listNumber) == 0:
             return messagebox.showinfo("提示", "请先输入标记字符")
+        if not ''.join(listNumber).isdigit():
+            return messagebox.showinfo("提示", "标记字符只能是数字")
         if self.isZip.get() == 1 and not self.Entry_name.get():
             return messagebox.showinfo("提示", "请先输入压缩包名称")
         
