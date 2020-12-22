@@ -19,13 +19,13 @@ def sendMail(outbox, inboxList, workpath, zipName):
     chromedriverPath = os.path.join(os.getcwd(), 'chromedriver.exe')
     driver = webdriver.Chrome(chrome_options=option, executable_path=chromedriverPath)
 
-    driver.get('https://mail.qq.com/')
+    # driver.get('https://mail.qq.com/')
 
-    # driver.set_page_load_timeout(5)
-    # try:
-    #     driver.get('https://mail.qq.com/')
-    # except:
-    #     driver.execute_script("window.stop()")
+    driver.set_page_load_timeout(5)
+    try:
+        driver.get('https://mail.qq.com/')
+    except:
+        driver.execute_script("window.stop()")
 
     #最大化谷歌浏览器
     # driver.maximize_window()
@@ -35,9 +35,8 @@ def sendMail(outbox, inboxList, workpath, zipName):
     wait.until(EC.frame_to_be_available_and_switch_to_it((By.XPATH,"//iframe[@id='login_frame']")))
     wait.until(EC.element_to_be_clickable((By.XPATH, "//a[@uin=" + qqnumber +"]"))).click()
 
-    # 点击写信
-    WebDriverWait(driver, 100).until(EC.element_to_be_clickable((By.XPATH, "//a[@id='composebtn']"))).click()
-    wait.until(EC.frame_to_be_available_and_switch_to_it((By.XPATH,"//iframe[@id='mainFrame']")))
+    driver.switch_to_window(driver.window_handles[-1])
+    time.sleep(2)
     
     for q in inboxList:
         # 收件邮箱
@@ -46,6 +45,11 @@ def sendMail(outbox, inboxList, workpath, zipName):
         filePath = os.path.join(os.path.dirname(workpath), q.replace('@qq.com', ''), zipName + '.zip')
 
         try:
+
+            # 点击写信
+            wait.until(EC.element_to_be_clickable((By.XPATH, "//a[@id='composebtn']"))).click()
+            wait.until(EC.frame_to_be_available_and_switch_to_it((By.XPATH,"//iframe[@id='mainFrame']")))
+
             wait.until(EC.element_to_be_clickable((By.XPATH, "//input[@aria-label='收件人']"))).send_keys(reMail)
             wait.until(EC.element_to_be_clickable((By.XPATH, "//span[@class='compose_toolbtn qmEditorAttachBig']"))).click()
 
@@ -71,10 +75,8 @@ def sendMail(outbox, inboxList, workpath, zipName):
             
             print('！！！！！！' + reMail + '发送成功！！！！！！')            
             
-            if reMail != inboxList[len(inboxList) - 1]:
-                driver.find_elements_by_id('btnagainl')[0].click()
+            driver.switch_to.default_content()
+                
 
         except Exception as result:
             print('！！！！！！' + reMail +'发送失败！！！！！！')
-
-# sendMail('276104371@qq.com', ['2998011437@qq.com', '863246160@qq.com'], 'E:\hane\py', '玩.zip')

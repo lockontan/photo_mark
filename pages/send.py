@@ -1,5 +1,6 @@
 import tkinter as tk
 import threading
+from tkinter import messagebox
 from tasks.send import sendMail
 
 class sendPage(tk.Frame):
@@ -48,6 +49,11 @@ class sendPage(tk.Frame):
         self.Entry_inboxt = tk.Entry(self, textvariable=self.Entry_var_inboxt)
         self.Entry_inboxt.place(x=200, y=66, width=220, height=26)
 
+        def input(eventObj):
+            inboxStr = self.Entry_inboxt.get()
+            self.inbox = [var.replace(' ', '') for var in inboxStr.split(';') if var]
+        self.Entry_inboxt.bind('<KeyRelease>', input)
+
     # 更新收件箱
     def updateData(self):
         markList = self.parent.homePage.markList
@@ -62,7 +68,10 @@ class sendPage(tk.Frame):
     def setSendButtonCommand(self):
         workpath = self.parent.homePage.workpath
         zipName = self.parent.homePage.zipName
-        print(workpath, zipName)
+        if len(self.outbox) == 0:
+            return messagebox.showinfo("提示", "请先填写发件箱")
+        if len(self.inbox) == 0:
+            return messagebox.showinfo("提示", "请先填写收件箱")
         self.saveData()
         self.thread_it(self, sendMail, self.outbox, self.inbox, workpath, zipName)
     

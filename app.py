@@ -5,12 +5,14 @@ from pages.send import sendPage
 
 from method.getConfig import getConfig
 
+config = getConfig()
+
 class App(tk.Tk):
     def __init__(self):
         super().__init__()
         self.title('文件')
         self.resizable(0,0)
-        self.getConfig = getConfig()
+        self.getConfig = config
         self.setPosition()
         self.initPage()
         self.setMenu()
