@@ -1,5 +1,7 @@
 import time
 import os
+import glob
+
 from selenium import webdriver
 
 from selenium.webdriver.support.ui import WebDriverWait
@@ -16,7 +18,7 @@ def sendMail(outbox, inboxList, workpath, zipName):
     # option.add_argument('headless')
 
     # 打开chrome浏览器
-    chromedriverPath = os.path.join(os.getcwd(), 'chromedriver.exe')
+    chromedriverPath = os.path.join(os.getcwd(), 'tools', 'chromedriver.exe')
     driver = webdriver.Chrome(chrome_options=option, executable_path=chromedriverPath)
 
     # driver.get('https://mail.qq.com/')
@@ -42,7 +44,8 @@ def sendMail(outbox, inboxList, workpath, zipName):
         # 收件邮箱
         reMail = q
         # 附件地址
-        filePath = os.path.join(os.path.dirname(workpath), q.replace('@qq.com', ''), zipName + '.zip')
+        re = os.path.join(os.path.dirname(workpath), zipName, q.replace('@qq.com', ''), zipName + '*.rar')
+        filePath = glob.glob(re)[0]
 
         try:
 
@@ -79,4 +82,5 @@ def sendMail(outbox, inboxList, workpath, zipName):
                 
 
         except Exception as result:
+            print(result)
             print('！！！！！！' + reMail +'发送失败！！！！！！')

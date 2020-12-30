@@ -7,7 +7,7 @@ class sendPage(tk.Frame):
     def __init__(self, parent):
         super().__init__(parent)
         self.parent =parent
-        self.outbox = None
+        self.outbox = ''
         self.inbox = []
         self.place(x=0, y=0, relwidth=1, relheight=1)
         # 配置读取
