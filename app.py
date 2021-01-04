@@ -2,6 +2,7 @@ import tkinter as tk
 
 from pages.home import homePage
 from pages.send import sendPage
+from pages.extract import extractPage
 
 from method.getConfig import getConfig
 
@@ -32,11 +33,13 @@ class App(tk.Tk):
         menubar = tk.Menu(self)
         menubar.add_command(label = "首页", command = lambda:self.changePage(1))
         menubar.add_command(label = "发送", command = lambda:self.changePage(2))
+        menubar.add_command(label = "提取", command = lambda:self.changePage(3))
         self.config(menu = menubar)
     
     def initPage(self):
         self.homePage = homePage(self)
         self.sendPage = sendPage(self)
+        self.extractPage = extractPage(self)
         self.changePage(1)
 
     def changePage(self, index):
@@ -45,6 +48,8 @@ class App(tk.Tk):
         elif index == 2:
             self.sendPage.updateData()
             self.sendPage.lift()
+        elif index == 3:
+            self.extractPage.lift()
 
 app = App()
 app.update()

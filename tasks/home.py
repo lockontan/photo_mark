@@ -4,7 +4,7 @@ import random
 import shutil
 
 password = ['H', 'A', 'N', 'E', 'P', 'U', 'M', 'R', 'O', 'D']
-bassword = ['0',   '1', '2',   '3', '4', '5',   '6',   '7',   '8', '9']
+bassword = ['0', '1', '2', '3', '4', '5', '6', '7', '8', '9']
 
 def getRandomStr():
     seed = "1234567890abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ"
@@ -21,7 +21,9 @@ def setMark(filePath, fileName, mark):
    # 程序名称
    exif_dict["0th"][305] = mark.encode()
    # 相机型号
-   exif_dict["0th"][272] = mark.encode()
+   # exif_dict["0th"][272] = mark.encode()
+   # ImageId
+   exif_dict["0th"][32781] = mark.encode()
    exif_bytes = piexif.dump(exif_dict)
    piexif.insert(exif_bytes, filePath)
 
