@@ -2,6 +2,7 @@ import piexif
 import os
 import random
 import shutil
+import subprocess
 
 password = ['H', 'A', 'N', 'E', 'P', 'U', 'M', 'R', 'O', 'D']
 bassword = ['0', '1', '2', '3', '4', '5', '6', '7', '8', '9']
@@ -47,7 +48,7 @@ def zip_file_with_winRar(input_path, output_path, output_name):
         os.makedirs(output_path)
     password = getRandomStr()
     command = os.path.join(os.getcwd(), 'tools', 'WinRAR.exe')  + " a -r -ep1 -hp" + password +" " + os.path.join(output_path, output_name + '_'+ password + '.rar')+ " "  + os.path.join(input_path, '*')
-    os.system(command)
+    subprocess.run(command)
 
 def startZipMisson(app):
 
