@@ -20,7 +20,7 @@ def setMark(filePath, fileName, mark):
    # exif_dict["0th"][piexif.ImageIFD.Make] = mark.encode()
    # exif_dict["0th"][piexif.ImageIFD.Artist] = mark.encode()
    # 程序名称
-   exif_dict["0th"][305] = mark.encode()
+   # exif_dict["0th"][305] = mark.encode()
    # 相机型号
    # exif_dict["0th"][272] = mark.encode()
    # ImageId

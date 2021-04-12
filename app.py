@@ -32,7 +32,7 @@ class App(tk.Tk):
     def setMenu(self):
         menubar = tk.Menu(self)
         menubar.add_command(label = "首页", command = lambda:self.changePage(1))
-        # menubar.add_command(label = "发送", command = lambda:self.changePage(2))
+        menubar.add_command(label = "发送", command = lambda:self.changePage(2))
         menubar.add_command(label = "提取", command = lambda:self.changePage(3))
         self.config(menu = menubar)
     

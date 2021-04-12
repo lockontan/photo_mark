@@ -17,7 +17,7 @@ def extract(filePath, messagebox):
                 newValue.append(v)
             strs = ''.join(newValue)
             if strs:
-                messagebox.showinfo("结果", strs)
+                messagebox.showinfo("结果(ImageID)：", strs)
                 return
 
     # Software

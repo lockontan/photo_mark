@@ -33,7 +33,6 @@ class extractPage(tk.Frame):
     # 路径选择绑定事件
     def setPathSelectCommand(self):
         workpath = filedialog.askopenfilename(filetypes=[('image', '*.jpg'), ('image', '*.jpeg')])
-        print(workpath)
         if workpath:
             self.workpath = workpath
             self.Entry_var_select.set(self.workpath)
