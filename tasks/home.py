@@ -62,16 +62,15 @@ def startZipMisson(app):
    
     for number in markList:
 
-        zipFullPath = os.path.join(os.path.split(workpath)[0], zipName, str(number), zipName + '.rar')
+        outputInfo('标记开始: ' + str(number) + '\n')
 
-        if os.path.exists(os.path.join(str(number), zipName)) == False:
-            outputInfo('标记开始: ' + str(number) + '\n')
+        walkFile(workpath, str(number))
 
-            walkFile(workpath, str(number))
+        outputInfo('标记完成: ' + str(number) + '\n')
 
-            outputInfo('标记完成: ' + str(number) + '\n')
-
-            if isZipValue == 1:
+        if isZipValue == 1:
+            zipFullPath = os.path.join(os.path.split(workpath)[0], zipName, str(number), zipName + '.rar')
+            if os.path.exists(os.path.join(str(number), zipName)) == False:
                 outputInfo('正在压缩: ' + zipFullPath + '\n')
 
                 base_output_path = os.path.join(os.path.split(workpath)[0], zipName)
@@ -81,9 +80,10 @@ def startZipMisson(app):
                 zip_file_with_winRar(workpath, os.path.join(base_output_path, str(number)), zipName)
 
                 outputInfo('完成压缩: ' + zipFullPath + '\n\n')
-        else:
+                
+            else:
             
-            outputInfo('文件已存在: ' + zipFullPath + '\n')
+                outputInfo('文件已存在: ' + zipFullPath + '\n')
     outputInfo('任务完成')
 
     app.isZipEnd = False
